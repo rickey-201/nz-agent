@@ -99,7 +99,7 @@ func serviceActions(cmd *cobra.Command, args []string) {
 			}
 		}
 	}
-// aadsd
+
 	action := args[0]
 	runService(action, agentCliFlags)
 }
