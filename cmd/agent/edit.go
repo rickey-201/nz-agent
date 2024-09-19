@@ -20,7 +20,7 @@ var editCmd = &cobra.Command{
 }
 
 func init() {
-	agentCmd.AddCommand(editCmd)
+	// agentCmd.AddCommand(editCmd)
 }
 
 // 修改Agent要监控的网卡与硬盘分区
