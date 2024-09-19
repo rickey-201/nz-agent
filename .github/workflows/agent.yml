@@ -2,8 +2,16 @@ name: Release
 
 on:
   push:
-    tags:
-      - "v*"
+    branches:
+      - main
+    paths-ignore:
+      - ".github/workflows/agent.yml"
+      - ".github/workflows/codeql-analysis.yml"
+      - ".github/workflows/test-on-pr.yml"
+      - ".github/workflows/contributors.yml"
+      - "README.md"
+      - ".goreleaser.yml"
+
 
 jobs:
   deploy:
