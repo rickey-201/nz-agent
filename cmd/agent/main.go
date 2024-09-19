@@ -462,26 +462,26 @@ func reportState(lastReportHostInfo time.Time) time.Time {
 // doSelfUpdate 执行更新检查 如果更新成功则会结束进程
 func doSelfUpdate(useLocalVersion bool) {
 	return
-	// v := semver.MustParse("0.1.0")
-	// if useLocalVersion {
-	// 	v = semver.MustParse(version)
-	// }
-	// printf("检查更新: %v", v)
-	// var latest *selfupdate.Release
-	// var err error
-	// if monitor.CachedCountryCode != "cn" && !agentCliParam.UseGiteeToUpgrade {
-	// 	latest, err = selfupdate.UpdateSelf(v, "nezhahq/agent")
-	// } else {
-	// 	latest, err = selfupdate.UpdateSelfGitee(v, "naibahq/agent")
-	// }
-	// if err != nil {
-	// 	printf("更新失败: %v", err)
-	// 	return
-	// }
-	// if !latest.Version.Equals(v) {
-	// 	printf("已经更新至: %v, 正在结束进程", latest.Version)
-	// 	os.Exit(1)
-	// }
+	v := semver.MustParse("0.1.0")
+	if useLocalVersion {
+		v = semver.MustParse(version)
+	}
+	printf("检查更新: %v", v)
+	var latest *selfupdate.Release
+	var err error
+	if monitor.CachedCountryCode != "cn" && !agentCliParam.UseGiteeToUpgrade {
+		latest, err = selfupdate.UpdateSelf(v, "nezhahq/agent")
+	} else {
+		latest, err = selfupdate.UpdateSelfGitee(v, "naibahq/agent")
+	}
+	if err != nil {
+		printf("更新失败: %v", err)
+		return
+	}
+	if !latest.Version.Equals(v) {
+		printf("已经更新至: %v, 正在结束进程", latest.Version)
+		os.Exit(1)
+	}
 }
 
 func handleUpgradeTask(*pb.Task, *pb.TaskResult) {
