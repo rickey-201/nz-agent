@@ -4,7 +4,7 @@ import (
 	"context"
 	"crypto/tls"
 	"errors"
-	"fmt"
+	// "fmt"
 	"io"
 	"log"
 	"net"
@@ -20,7 +20,7 @@ import (
 	"github.com/blang/semver"
 	"github.com/ebi-yade/altsvc-go"
 	"github.com/go-ping/ping"
-	// "github.com/nezhahq/go-github-selfupdate/selfupdate"
+	"github.com/nezhahq/go-github-selfupdate/selfupdate"
 	"github.com/nezhahq/service"
 	"github.com/quic-go/quic-go/http3"
 	utls "github.com/refraction-networking/utls"
@@ -128,10 +128,10 @@ func init() {
 		http.DefaultTransport, nil, headers,
 	)
 
-	ex, err := os.Executable()
-	if err != nil {
-		panic(err)
-	}
+	// ex, err := os.Executable()
+	// if err != nil {
+	// 	panic(err)
+	// }
 
 	// 初始化运行参数
 	// agentCmd.PersistentFlags().StringVarP(&agentCliParam.Server, "server", "s", "localhost:5555", "管理面板RPC端口")
